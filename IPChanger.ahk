@@ -1,4 +1,6 @@
-﻿#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
+﻿global version := "1.0"
+
+#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
 ; #Warn  ; Enable warnings to assist with detecting common errors.
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
@@ -24,9 +26,9 @@ if not (A_IsAdmin or RegExMatch(full_command_line, " /restart(?!\S)"))
 ; Menu
 Menu, Tray, add, &Go DHCP, godhcp
 Menu, Tray, add, &Go Static, gostatic
-;Menu, Tray, Default, &Menu Name 	;Double click icon activates menu item
 Menu, Tray, Add, E&xit, ^+Esc
 Menu, Tray, NoStandard	;Remove the standard complied hotkey menus: "Exit, Suspend Hotkeys, Pause Script"
+Menu, Tray, Tip, IP Changer: Version %version%
 
 ; Script Control
 ^+Esc::ExitApp	;kills application dead when pressing Ctrl+Esc. Note: This line will stop any auto-exec code underneath.
@@ -73,13 +75,13 @@ gostatic:
 		MsgBox % "Tried. Output was:`r`n" . output
 	Else
 	{
-		TrayTipShow("Static IP Active")
+		TrayTipShow("Static IP Active on " . ip)
 	}
 return
 
 TrayTipShow(message) {
     TrayTip, %message%, %message%
-	Sleep 2000
+	Sleep 3000
 	TrayTip  ; Attempt to hide it the normal way.
     if SubStr(A_OSVersion,1,3) = "10." {
         Menu Tray, NoIcon
